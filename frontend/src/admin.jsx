@@ -241,73 +241,105 @@ async function postdata(e) {
             </div>
 
             {/* SIDE PREVIEW PANEL */}
-            <div className="rounded-3xl sm:rounded-[28px] p-5 sm:p-6 border border-white/10 bg-[#10182B] shadow-[0_18px_50px_rgba(0,0,0,0.28)] xl:sticky xl:top-28">
-              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-sky-300/75">
-                Preview
+<div className="rounded-3xl sm:rounded-[28px] p-5 sm:p-6 border border-white/10 bg-[#10182B] shadow-[0_18px_50px_rgba(0,0,0,0.28)] xl:sticky xl:top-28">
+  <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-sky-300/75">
+    Preview
+  </p>
+
+  <h2 className="mt-2 text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-white">
+    Product Summary
+  </h2>
+
+  <div className="mt-6 rounded-3xl overflow-hidden border border-white/10 bg-[#0C1324]">
+    {/* IMAGE PREVIEW */}
+    <div className="h-60 flex items-center justify-center bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.10),transparent_35%),linear-gradient(180deg,#0E1628_0%,#10182B_100%)]">
+      {product.image ? (
+        <img
+          src={URL.createObjectURL(product.image)}
+          alt="preview"
+          className="max-h-full max-w-full object-contain p-6"
+        />
+      ) : (
+        <div className="h-24 w-24 rounded-full flex items-center justify-center text-xs font-medium bg-white/5 border border-white/10 text-white/50">
+          No image
+        </div>
+      )}
+    </div>
+
+    <div className="p-5">
+      <h3 className="text-lg font-semibold text-white">
+        {product.name || "Product name"}
+      </h3>
+
+      <p className="mt-2 text-sm capitalize text-white/55">
+        {product.items === "default" ? "Category" : product.items}
+      </p>
+
+      {/* NUMBER-WISE PRICE RANGE */}
+      <div className="mt-4">
+        <p className="text-2xl font-bold bg-linear-to-r from-white via-sky-200 to-violet-300 bg-clip-text text-transparent">
+          ₹ {product.prices.some(price => price !== "")
+            ? `${Math.min(...product.prices.filter(price => price !== "").map(Number))} - ₹ ${Math.max(...product.prices.filter(price => price !== "").map(Number))}`
+            : "0"}
+        </p>
+      </div>
+
+      {/* TOTAL STOCK */}
+      <div className="mt-3">
+        <span className="inline-block rounded-full px-3 py-1 text-xs font-medium bg-white/5 border border-white/10 text-white/70">
+          Total Stock: {product.sizes.reduce((total, size) => total + Number(size || 0), 0)}
+        </span>
+      </div>
+
+      {/* NUMBER-WISE SUMMARY */}
+      <div className="mt-5">
+        <p className="text-xs uppercase tracking-[0.22em] text-white/35">
+          Number-wise Details
+        </p>
+
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          {product.sizes.map((size, index) => (
+            <div
+              key={index}
+              className="rounded-xl border border-white/10 bg-white/5 p-3"
+            >
+              <p className="text-xs text-white/50">
+                Number {index + 1}
               </p>
-
-              <h2 className="mt-2 text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-white">
-                Product Summary
-              </h2>
-
-              <div className="mt-6 rounded-3xl overflow-hidden border border-white/10 bg-[#0C1324]">
-                {/* IMAGE PREVIEW */}
-                <div className="h-60 flex items-center justify-center bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.10),transparent_35%),linear-gradient(180deg,#0E1628_0%,#10182B_100%)]">
-                  {product.image ? (
-                    <img
-                      src={URL.createObjectURL(product.image)}
-                      alt="preview"
-                      className="max-h-full max-w-full object-contain p-6"
-                    />
-                  ) : (
-                    <div className="h-24 w-24 rounded-full flex items-center justify-center text-xs font-medium bg-white/5 border border-white/10 text-white/50">
-                      No image
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold text-white">
-                    {product.name || "Product name"}
-                  </h3>
-
-                  <p className="mt-2 text-sm capitalize text-white/55">
-                    {product.items === "default" ? "Category" : product.items}
-                  </p>
-
-                  <div className="mt-4 flex items-center justify-between">
-                    <p className="text-2xl font-bold bg-linear-to-r from-white via-sky-200 to-violet-300 bg-clip-text text-transparent">
-                      ₹ {product.price || "0"}
-                    </p>
-
-                    <span className="rounded-full px-3 py-1 text-xs font-medium bg-white/5 border border-white/10 text-white/70">
-                      Qty: {product.quantity || 0}
-                    </span>
-                  </div>
-
-                  <div className="mt-5">
-                    <p className="text-xs uppercase tracking-[0.22em] text-white/35">
-                      Selected Color
-                    </p>
-
-                    <div className="mt-3 flex items-center gap-3">
-                      <div
-                        className="h-10 w-10 rounded-full border border-white/10"
-                        style={{ backgroundColor: product.color }}
-                      />
-                      <span className="text-sm text-white/55">
-                        {product.color}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <p className="mt-4 text-sm leading-6 text-white/55">
-                This panel gives a quick visual summary of the product before
-                submission.
+              <p className="mt-1 text-sm font-semibold text-white">
+                ₹ {product.prices[index] || 0}
+              </p>
+              <p className="text-xs text-white/50">
+                Stock: {size || 0}
               </p>
             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* COLOR */}
+      <div className="mt-5">
+        <p className="text-xs uppercase tracking-[0.22em] text-white/35">
+          Selected Color
+        </p>
+
+        <div className="mt-3 flex items-center gap-3">
+          <div
+            className="h-10 w-10 rounded-full border border-white/10"
+            style={{ backgroundColor: product.color }}
+          />
+          <span className="text-sm text-white/55">
+            {product.color}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p className="mt-4 text-sm leading-6 text-white/55">
+    This panel gives a quick visual summary of the product before submission.
+  </p>
+</div>
           </div>
         </div>
       </div>
