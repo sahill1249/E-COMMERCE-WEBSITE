@@ -137,84 +137,36 @@ async function postdata(e) {
                     placeholder="Enter product name"
                     value={product.name}
                   />
-                </div>
-
-                {/* Price */}
-                <div>
-                  <label className="mb-2 block text-xs uppercase tracking-[0.22em] text-white/35">
-                    Price
-                  </label>
-                  <input
-                    className="w-full rounded-2xl border border-white/10 bg-[#0C1324] px-4 py-3 text-sm text-white outline-none transition focus:border-sky-400"
-                    type="number"
-                    name="price"
-                    placeholder="Enter price"
-                    onChange={change}
-                    value={product.price}
-                  />
-                </div>
-{/* NUMBER-WISE STOCK AND PRICE */}
+                </div>     
+{/* SIZE-WISE STOCK */}
 <div className="md:col-span-2">
-
   <label className="mb-3 block text-xs uppercase tracking-[0.22em] text-white/35">
-    Number-wise Stock & Price
+    Number-wise Stock
   </label>
 
   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-
     {Array.from({ length: 8 }, (_, index) => (
-
       <div
         key={index}
         className="rounded-2xl border border-white/10 bg-[#0C1324] p-3"
       >
-
-        <label className="mb-3 block text-sm font-semibold text-white">
+        <label className="mb-2 block text-sm font-semibold text-white">
           Number {index + 1}
         </label>
 
-        {/* STOCK */}
         <input
           type="number"
           min="0"
-          placeholder="Stock (pieces)"
+          placeholder="Pieces"
           value={product.sizes[index]}
           onChange={(e) => changeSize(index, e.target.value)}
-          className="mb-3 w-full rounded-xl border border-white/10 bg-[#10182B] px-3 py-2 text-sm text-white outline-none focus:border-sky-400"
-        />
-
-        {/* PRICE */}
-        <input
-          type="number"
-          min="0"
-          placeholder="Price ₹"
-          value={product.prices[index]}
-          onChange={(e) => changePrice(index, e.target.value)}
           className="w-full rounded-xl border border-white/10 bg-[#10182B] px-3 py-2 text-sm text-white outline-none focus:border-sky-400"
         />
-
       </div>
-
     ))}
-
   </div>
 </div>
-                {/* Quantity */}
-                <div>
-                  <label className="mb-2 block text-xs uppercase tracking-[0.22em] text-white/35">
-                    Quantity
-                  </label>
-                  <input
-                    className="w-full rounded-2xl border border-white/10 bg-[#0C1324] px-4 py-3 text-sm text-white outline-none transition focus:border-sky-400"
-                    type="number"
-                    name="quantity"
-                    placeholder="Enter quantity"
-                    onChange={change}
-                    value={product.quantity}
-                  />
-                </div>
-
-                {/* Category */}
+               
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-[0.22em] text-white/35">
                     Category
@@ -313,7 +265,13 @@ async function postdata(e) {
                   </p>
 
                   <div className="mt-4 flex items-center justify-between">
-                  
+                    <p className="text-2xl font-bold bg-linear-to-r from-white via-sky-200 to-violet-300 bg-clip-text text-transparent">
+                      ₹ {product.price || "0"}
+                    </p>
+
+                    <span className="rounded-full px-3 py-1 text-xs font-medium bg-white/5 border border-white/10 text-white/70">
+                      Qty: {product.quantity || 0}
+                    </span>
                   </div>
 
                   <div className="mt-5">
