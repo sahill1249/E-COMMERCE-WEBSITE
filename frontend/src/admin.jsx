@@ -138,10 +138,10 @@ async function postdata(e) {
                     value={product.name}
                   />
                 </div>     
-{/* SIZE-WISE STOCK */}
+{/* NUMBER-WISE STOCK AND PRICE */}
 <div className="md:col-span-2">
   <label className="mb-3 block text-xs uppercase tracking-[0.22em] text-white/35">
-    Number-wise Stock
+    Number-wise Stock & Price
   </label>
 
   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -150,16 +150,27 @@ async function postdata(e) {
         key={index}
         className="rounded-2xl border border-white/10 bg-[#0C1324] p-3"
       >
-        <label className="mb-2 block text-sm font-semibold text-white">
+        <label className="mb-3 block text-sm font-semibold text-white">
           Number {index + 1}
         </label>
 
+        {/* Stock */}
         <input
           type="number"
           min="0"
-          placeholder="Pieces"
+          placeholder="Stock (pieces)"
           value={product.sizes[index]}
           onChange={(e) => changeSize(index, e.target.value)}
+          className="mb-3 w-full rounded-xl border border-white/10 bg-[#10182B] px-3 py-2 text-sm text-white outline-none focus:border-sky-400"
+        />
+
+        {/* Price */}
+        <input
+          type="number"
+          min="0"
+          placeholder="Price ₹"
+          value={product.prices[index]}
+          onChange={(e) => changePrice(index, e.target.value)}
           className="w-full rounded-xl border border-white/10 bg-[#10182B] px-3 py-2 text-sm text-white outline-none focus:border-sky-400"
         />
       </div>
