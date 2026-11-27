@@ -175,7 +175,6 @@ app.post("/addprod", upload.single("image"), async (req, res) => {
     console.log("STATUS:", err.response?.status);
     console.log("BACKEND ERROR:", err.response?.data);
     console.log("FULL ERROR:", err);
-    alert(err.response?.data?.error || "Failed to add product!");
 }
 });
 app.get("/getdata",async(req,res)=>{
