@@ -22,14 +22,32 @@ function Cart() {
     getdata();
   }, []);
 
-  async function removeproduct(e, product) {
-    e.preventDefault();
+ async function removeproduct(e, productId) {
+  e.preventDefault();
+
+  try {
     await axios.post(
       "https://e-commerce-website-wlee.onrender.com/addtocartr",
-      { product },
+      { product: productId },
       { withCredentials: true }
     );
+
+    setproduct((prev) =>
+      prev.filter((item) => item.product._id !== productId)
+    );
+
+    // Refresh total from backend
+    const res = await axios.post(
+      "https://e-commerce-website-wlee.onrender.com/cart",
+      "hii",
+      { withCredentials: true }
+    );
+
+    settotal(res.data.total);
+  } catch (err) {
+    console.log("REMOVE CART ERROR:", err.response?.data || err.message);
   }
+}
 
   async function checkout() {
     const res = await axios.post(
@@ -116,7 +134,7 @@ function Cart() {
                         <div className="h-42.5 sm:h-42.5 flex items-center justify-center px-4 py-4">
                           <img
                             className="max-h-full max-w-full object-contain drop-shadow-[0_16px_28px_rgba(0,0,0,0.32)]"
-                            src={"http://localhost:5000" + items.product.imageurl}
+                            src={items.product.imageurl}
                             alt={items.product.name}
                           />
                         </div>

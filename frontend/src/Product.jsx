@@ -33,7 +33,7 @@ function Products() {
     setnumber(number + 1);
 
     await axios.post(
-      "https://e-commerce-website-wlee.onrender.com//addtocart",
+      "https://e-commerce-website-wlee.onrender.com/addtocart",
       {
         prodid,
         quantity,

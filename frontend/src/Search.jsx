@@ -10,7 +10,7 @@ function Search() {
   async function datasend(e) {
     e.preventDefault();
     const res = await axios.post(
-      "http://localhost:5000/search",
+      "https://e-commerce-website-wlee.onrender.com/search",
       { search },
       { withCredentials: true }
     );
