@@ -127,7 +127,7 @@ function Products() {
                     <div className="h-37.5 sm:h-70 lg:h-75 flex items-center justify-center px-3 sm:px-8 pt-10 sm:pt-14 pb-4 sm:pb-6">
                       <img
                         className="max-h-full max-w-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.35)] transition-transform duration-500 group-hover:scale-[1.05]"
-                        src={"https://e-commerce-website-wlee.onrender.com" + items.imageurl}
+                        src={items.imageurl}
                         alt={items.name}
                       />
                     </div>
