@@ -20,9 +20,12 @@ function Admin() {
     setproduct({ ...product, [name]: value });
   }
 
-  async function postdata(e) {
-    e.preventDefault();
+ async function postdata(e) {
+  e.preventDefault();
+
+  try {
     const formData = new FormData();
+
     formData.append("items", product.items);
     formData.append("name", product.name);
     formData.append("price", product.price);
@@ -30,10 +33,18 @@ function Admin() {
     formData.append("image", product.image);
     formData.append("color", product.color);
 
-    await axios.post("https://e-commerce-website-wlee.onrender.com/addprod", formData, {
-      withCredentials: true,
-    });
+    const res = await axios.post(
+      "https://e-commerce-website-wlee.onrender.com/addprod",
+      formData,
+      { withCredentials: true }
+    );
+
+    alert("Product added successfully!");
+  } catch (err) {
+    console.error(err);
+    alert("Failed to add product!");
   }
+}
 
   useEffect(() => {
     async function isadmin() {

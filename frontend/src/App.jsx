@@ -63,7 +63,7 @@ function App() {
 
         {/* HEADER */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-white">DrinkStore</h1>
+          <h1 className="text-3xl font-bold text-white">Store</h1>
           <p className="text-gray-400 text-sm mt-1">
             {theme ? "Welcome back" : "Create your account"}
           </p>
