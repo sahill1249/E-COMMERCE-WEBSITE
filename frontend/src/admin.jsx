@@ -313,13 +313,7 @@ async function postdata(e) {
                   </p>
 
                   <div className="mt-4 flex items-center justify-between">
-                    <p className="text-2xl font-bold bg-linear-to-r from-white via-sky-200 to-violet-300 bg-clip-text text-transparent">
-                      ₹ {product.price || "0"}
-                    </p>
-
-                    <span className="rounded-full px-3 py-1 text-xs font-medium bg-white/5 border border-white/10 text-white/70">
-                      Qty: {product.quantity || 0}
-                    </span>
+                  
                   </div>
 
                   <div className="mt-5">
