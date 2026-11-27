@@ -167,7 +167,7 @@ console.log("SIZES RECEIVED:", sizes);
         });
 
         await product.save();
-
+  
         console.log("Product added:", product);
 
         res.status(201).json({

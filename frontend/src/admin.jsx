@@ -21,13 +21,12 @@ function Admin() {
     setproduct({ ...product, [name]: value });
   }
 function changeSize(index, value) {
-  const updatedSizes = [...product.sizes];
-  updatedSizes[index] = value;
-
-  setproduct({
-    ...product,
-    sizes: updatedSizes,
-  });
+  setproduct(prev => ({
+    ...prev,
+    sizes: prev.sizes.map((size, i) =>
+      i === index ? value : size
+    )
+  }));
 }
  async function postdata(e) {
   e.preventDefault();
@@ -38,15 +37,17 @@ function changeSize(index, value) {
   0
 );
     const formData = new FormData();
-const sizes = product.sizes.map(Number);
-formData.append("sizes", JSON.stringify(sizes));
+  const sizes = product.sizes.map(size => Number(size || 0));
+   formData.append("sizes", JSON.stringify(sizes));
     formData.append("items", product.items);
     formData.append("name", product.name);
     formData.append("price", product.price);
     formData.append("quantity", totalQuantity);
     formData.append("image", product.image);
     formData.append("color", product.color);
-    formData.append("sizes", JSON.stringify(product.sizes));
+    
+
+formData.append("sizes", JSON.stringify(sizes));
 
     const res = await axios.post(
       "https://e-commerce-website-wlee.onrender.com/addprod",
