@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const cloudinary = require("./cloudinary");
-
 const multer = require("multer");
 const express = require('express');
 const User = require("./database/usermodule");
