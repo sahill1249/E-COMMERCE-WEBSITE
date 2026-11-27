@@ -11,7 +11,8 @@ function Admin() {
     quantity: "",
     color: "#000000",
     items: "default",
-    sizes: Array.from({ length: 8 }, () => ""),
+    sizes: Array(8).fill(""),
+  prices: Array(8).fill(""),
   });
 
   const navigate = useNavigate();
@@ -28,26 +29,30 @@ function changeSize(index, value) {
     )
   }));
 }
- async function postdata(e) {
+function changePrice(index, value) {
+  setproduct(prev => ({
+    ...prev,
+    prices: prev.prices.map((price, i) =>
+      i === index ? value : price
+    )
+  }));
+}
+async function postdata(e) {
   e.preventDefault();
 
   try {
-   const totalQuantity = product.sizes.reduce(
-    (total, size) => total + Number(size || 0),
-    0
-);
+    const formData = new FormData();
 
-const formData = new FormData();
+    const sizes = product.sizes.map(size => Number(size || 0));
+    const prices = product.prices.map(price => Number(price || 0));
 
-const sizes = product.sizes.map(size => Number(size || 0));
+    formData.append("sizes", sizes.join(","));
+    formData.append("prices", prices.join(","));
 
-formData.append("sizes", sizes.join(","));
-formData.append("items", product.items);
-formData.append("name", product.name);
-formData.append("price", product.price);
-formData.append("quantity", totalQuantity);
-formData.append("image", product.image);
-formData.append("color", product.color);
+    formData.append("items", product.items);
+    formData.append("name", product.name);
+    formData.append("image", product.image);
+    formData.append("color", product.color);
 
     const res = await axios.post(
       "https://e-commerce-website-wlee.onrender.com/addprod",
@@ -56,6 +61,7 @@ formData.append("color", product.color);
     );
 
     alert("Product added successfully!");
+
   } catch (err) {
     console.error(err);
     alert("Failed to add product!");
@@ -147,32 +153,50 @@ formData.append("color", product.color);
                     value={product.price}
                   />
                 </div>
-{/* SIZE-WISE STOCK */}
+{/* NUMBER-WISE STOCK AND PRICE */}
 <div className="md:col-span-2">
+
   <label className="mb-3 block text-xs uppercase tracking-[0.22em] text-white/35">
-    Number-wise Stock
+    Number-wise Stock & Price
   </label>
 
   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+
     {Array.from({ length: 8 }, (_, index) => (
+
       <div
         key={index}
         className="rounded-2xl border border-white/10 bg-[#0C1324] p-3"
       >
-        <label className="mb-2 block text-sm font-semibold text-white">
+
+        <label className="mb-3 block text-sm font-semibold text-white">
           Number {index + 1}
         </label>
 
+        {/* STOCK */}
         <input
           type="number"
           min="0"
-          placeholder="Pieces"
+          placeholder="Stock (pieces)"
           value={product.sizes[index]}
           onChange={(e) => changeSize(index, e.target.value)}
+          className="mb-3 w-full rounded-xl border border-white/10 bg-[#10182B] px-3 py-2 text-sm text-white outline-none focus:border-sky-400"
+        />
+
+        {/* PRICE */}
+        <input
+          type="number"
+          min="0"
+          placeholder="Price ₹"
+          value={product.prices[index]}
+          onChange={(e) => changePrice(index, e.target.value)}
           className="w-full rounded-xl border border-white/10 bg-[#10182B] px-3 py-2 text-sm text-white outline-none focus:border-sky-400"
         />
+
       </div>
+
     ))}
+
   </div>
 </div>
                 {/* Quantity */}

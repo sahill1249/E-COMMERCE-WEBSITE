@@ -133,8 +133,10 @@ app.post("/isadmin",async(req,res)=>{
 app.post("/addprod", upload.single("image"), async (req, res) => {
     try {
 
-        const { name, price, quantity, color, items } = req.body;
-       const sizes = req.body.sizes.split(",").map(Number);
+      const { name, color, items } = req.body;
+
+const sizes = req.body.sizes.split(",").map(Number);
+const prices = req.body.prices.split(",").map(Number);
 
 console.log("SIZES RECEIVED:", sizes);
 
@@ -158,12 +160,11 @@ console.log("SIZES RECEIVED:", sizes);
         // Save product in MongoDB
         const product = new prod({
             name,
-            rate: price,
-            quantity,
             color,
             items,
             imageurl,
             sizes,
+             prices
         });
 
         await product.save();
