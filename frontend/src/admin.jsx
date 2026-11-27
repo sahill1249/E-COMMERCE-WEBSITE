@@ -32,22 +32,22 @@ function changeSize(index, value) {
   e.preventDefault();
 
   try {
-    const totalQuantity = product.sizes.reduce(
-  (total, size) => total + Number(size || 0),
-  0
+   const totalQuantity = product.sizes.reduce(
+    (total, size) => total + Number(size || 0),
+    0
 );
-    const formData = new FormData();
-  const sizes = product.sizes.map(size => Number(size || 0));
-   formData.append("sizes", JSON.stringify(sizes));
-    formData.append("items", product.items);
-    formData.append("name", product.name);
-    formData.append("price", product.price);
-    formData.append("quantity", totalQuantity);
-    formData.append("image", product.image);
-    formData.append("color", product.color);
-    
 
-formData.append("sizes", JSON.stringify(sizes));
+const formData = new FormData();
+
+const sizes = product.sizes.map(size => Number(size || 0));
+
+formData.append("sizes", sizes.join(","));
+formData.append("items", product.items);
+formData.append("name", product.name);
+formData.append("price", product.price);
+formData.append("quantity", totalQuantity);
+formData.append("image", product.image);
+formData.append("color", product.color);
 
     const res = await axios.post(
       "https://e-commerce-website-wlee.onrender.com/addprod",
