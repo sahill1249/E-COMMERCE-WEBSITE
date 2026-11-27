@@ -4,8 +4,17 @@ const prod =require("./database/products")
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const secret = "dhsgsghdshggd"
-const multer =require('multer');
+const cloudinary = require("./cloudinary");
+require("dotenv").config();
 const app= express();
+const multer = require("multer");
+
+const storage = multer.memoryStorage();
+
+const upload = multer({
+    storage: storage
+});
+
 
 const cart = require('./database/cart');
 
@@ -118,29 +127,60 @@ app.post("/isadmin",async(req,res)=>{
        
        
 });
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'upload/'),
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+
+
+app.post("/addprod", upload.single("image"), async (req, res) => {
+    try {
+
+        const { name, price, quantity, color, items } = req.body;
+
+        if (!req.file) {
+            return res.status(400).json({
+                message: "Please upload an image"
+            });
+        }
+
+        // Upload image to Cloudinary
+        const result = await cloudinary.uploader.upload(
+            `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+            {
+                folder: "products"
+            }
+        );
+
+        // Get Cloudinary image URL
+        const imageurl = result.secure_url;
+
+        // Save product in MongoDB
+        const product = new prod({
+            name,
+            rate: price,
+            quantity,
+            color,
+            items,
+            imageurl
+        });
+
+        await product.save();
+
+        console.log("Product added:", product);
+
+        res.status(201).json({
+            message: "Product added successfully",
+            product
+        });
+
+    } catch (err) {
+
+        console.log("ADD PRODUCT ERROR:", err);
+
+        res.status(500).json({
+            message: "Failed to add product",
+            error: err.message
+        });
+
+    }
 });
-
-const upload = multer({ storage });
-
-
-
-
-
-app.post("/addprod",upload.single("image"),async(req,res)=>{
-    const {name,price,quantity,color,items}=req.body;
-    const rate = price
-    const imageurl = "/uploads/"+req.file.filename;
-    const product = new prod({name,rate,quantity,color,items,imageurl})
-    await product.save()
-    console.log(product);
-    
-    
-})
 app.get("/getdata",async(req,res)=>{
     const products = await prod.find();
     res.json(products)

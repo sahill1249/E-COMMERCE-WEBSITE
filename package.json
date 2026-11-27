@@ -11,8 +11,10 @@
     "ansi-styles": "^4.3.0",
     "chalk": "^4.1.2",
     "cliui": "^8.0.1",
+    "cloudinary": "^2.11.0",
     "color-convert": "^2.0.1",
     "color-name": "^1.1.4",
+    "dotenv": "^18.0.10",
     "emoji-regex": "^8.0.0",
     "escalade": "^3.2.0",
     "get-caller-file": "^2.0.5",
@@ -41,6 +43,4 @@
   "author": "",
   "license": "ISC",
   "description": ""
-
-  
 }
