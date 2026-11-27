@@ -136,6 +136,8 @@ app.post("/addprod", upload.single("image"), async (req, res) => {
         const { name, price, quantity, color, items } = req.body;
         const sizes = JSON.parse(req.body.sizes || "[]");
 
+console.log("SIZES RECEIVED:", sizes);
+
         if (!req.file) {
             return res.status(400).json({
                 message: "Please upload an image"
@@ -174,9 +176,12 @@ app.post("/addprod", upload.single("image"), async (req, res) => {
         });
 
     } catch (err) {
-    console.log("STATUS:", err.response?.status);
-    console.log("BACKEND ERROR:", err.response?.data);
-    console.log("FULL ERROR:", err);
+    console.error("ADD PRODUCT ERROR:", err);
+
+    res.status(500).json({
+        message: "Failed to add product",
+        error: err.message
+    });
 }
 });
 app.get("/getdata",async(req,res)=>{
