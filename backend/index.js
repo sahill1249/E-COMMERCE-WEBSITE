@@ -1,3 +1,8 @@
+require("dotenv").config();
+
+const cloudinary = require("./cloudinary");
+
+const multer = require("multer");
 const express = require('express');
 const User = require("./database/usermodule");
 const prod =require("./database/products")
@@ -5,7 +10,6 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const secret = "dhsgsghdshggd"
 const cloudinary = require("./cloudinary");
-require("dotenv").config();
 const app= express();
 const multer = require("multer");
 
