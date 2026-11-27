@@ -134,7 +134,7 @@ app.post("/addprod", upload.single("image"), async (req, res) => {
     try {
 
         const { name, price, quantity, color, items } = req.body;
-        const sizes = JSON.parse(req.body.sizes || "[]");
+       const sizes = req.body.sizes.split(",").map(Number);
 
 console.log("SIZES RECEIVED:", sizes);
 
