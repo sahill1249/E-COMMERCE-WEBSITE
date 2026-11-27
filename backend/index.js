@@ -164,7 +164,7 @@ console.log("SIZES RECEIVED:", sizes);
             items,
             imageurl,
             sizes,
-             prices
+            prices,
         });
 
         await product.save();

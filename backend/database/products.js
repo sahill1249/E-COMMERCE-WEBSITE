@@ -1,7 +1,7 @@
 const mongosse = require("mongoose");
 
 
-const prodSchema = new mongoose.Schema({
+const prodSchema = new mongosse.Schema({
     name: String,
     color: String,
     imageurl: String,
@@ -15,7 +15,7 @@ const prodSchema = new mongoose.Schema({
     prices: {
         type: [Number],
         default: () => Array(8).fill(0)
-    }
+    },
 });
 
 module.exports = mongosse.model("prod",prodSchema);
