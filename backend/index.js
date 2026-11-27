@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
 const secret = "dhsgsghdshggd"
 const cloudinary = require("./cloudinary");
 const app= express();
-const multer = require("multer");
 
 const storage = multer.memoryStorage();
 
