@@ -11,6 +11,7 @@ function Admin() {
     quantity: "",
     color: "#000000",
     items: "default",
+    sizes: Array.from({ length: 8 }, () => ""),
   });
 
   const navigate = useNavigate();
@@ -19,7 +20,15 @@ function Admin() {
     const { name, value } = e.target;
     setproduct({ ...product, [name]: value });
   }
+function changeSize(index, value) {
+  const updatedSizes = [...product.sizes];
+  updatedSizes[index] = value;
 
+  setproduct({
+    ...product,
+    sizes: updatedSizes,
+  });
+}
  async function postdata(e) {
   e.preventDefault();
 
@@ -32,6 +41,7 @@ function Admin() {
     formData.append("quantity", product.quantity);
     formData.append("image", product.image);
     formData.append("color", product.color);
+    formData.append("sizes", JSON.stringify(product.sizes));
 
     const res = await axios.post(
       "https://e-commerce-website-wlee.onrender.com/addprod",
@@ -131,7 +141,34 @@ function Admin() {
                     value={product.price}
                   />
                 </div>
+{/* SIZE-WISE STOCK */}
+<div className="md:col-span-2">
+  <label className="mb-3 block text-xs uppercase tracking-[0.22em] text-white/35">
+    Number-wise Stock
+  </label>
 
+  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    {Array.from({ length: 8 }, (_, index) => (
+      <div
+        key={index}
+        className="rounded-2xl border border-white/10 bg-[#0C1324] p-3"
+      >
+        <label className="mb-2 block text-sm font-semibold text-white">
+          Number {index + 1}
+        </label>
+
+        <input
+          type="number"
+          min="0"
+          placeholder="Pieces"
+          value={product.sizes[index]}
+          onChange={(e) => changeSize(index, e.target.value)}
+          className="w-full rounded-xl border border-white/10 bg-[#10182B] px-3 py-2 text-sm text-white outline-none focus:border-sky-400"
+        />
+      </div>
+    ))}
+  </div>
+</div>
                 {/* Quantity */}
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-[0.22em] text-white/35">
