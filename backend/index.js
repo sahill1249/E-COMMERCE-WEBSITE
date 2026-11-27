@@ -172,15 +172,11 @@ app.post("/addprod", upload.single("image"), async (req, res) => {
         });
 
     } catch (err) {
-
-        console.log("ADD PRODUCT ERROR:", err);
-
-        res.status(500).json({
-            message: "Failed to add product",
-            error: err.message
-        });
-
-    }
+    console.log("STATUS:", err.response?.status);
+    console.log("BACKEND ERROR:", err.response?.data);
+    console.log("FULL ERROR:", err);
+    alert(err.response?.data?.error || "Failed to add product!");
+}
 });
 app.get("/getdata",async(req,res)=>{
     const products = await prod.find();
