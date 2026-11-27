@@ -134,6 +134,7 @@ app.post("/addprod", upload.single("image"), async (req, res) => {
     try {
 
         const { name, price, quantity, color, items } = req.body;
+        const sizes = JSON.parse(req.body.sizes || "[]");
 
         if (!req.file) {
             return res.status(400).json({
@@ -159,7 +160,8 @@ app.post("/addprod", upload.single("image"), async (req, res) => {
             quantity,
             color,
             items,
-            imageurl
+            imageurl,
+            sizes
         });
 
         await product.save();

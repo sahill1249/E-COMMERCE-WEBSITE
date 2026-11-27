@@ -10,6 +10,7 @@ function Products() {
   const [quantity, setquantity] = useState(1);
   const [number, setnumber] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedNumbers, setSelectedNumbers] = useState({});
 
   const categories = [
     "All",
@@ -28,20 +29,41 @@ function Products() {
     getdata();
   }, []);
 
-  async function senddata(e, prodid, quantity, num) {
-    e.preventDefault();
-    setnumber(number + 1);
+ async function senddata(e, prodid, num) {
+  e.preventDefault();
 
-    await axios.post(
+  const selectedNumber = selectedNumbers[prodid];
+
+  if (!selectedNumber) {
+    alert("Please select a number!");
+    return;
+  }
+
+  const quantity = Number(
+    document.getElementById(`quantity-${prodid}`).value
+  );
+
+  if (!quantity || quantity < 1) {
+    alert("Please enter a valid quantity!");
+    return;
+  }
+
+  try {
+    const res = await axios.post(
       "https://e-commerce-website-wlee.onrender.com/addtocart",
       {
         prodid,
         quantity,
-        num,
+        num: selectedNumber,
       },
       { withCredentials: true }
     );
+
+    alert(res.data.message || "Added to cart!");
+  } catch (err) {
+    alert(err.response?.data?.message || "Could not add product!");
   }
+}
 
   let filteredProducts = [];
 
@@ -151,35 +173,71 @@ function Products() {
                       </p>
                     </div>
 
-                    {/* QUANTITY PANEL */}
-                    <div className="mt-3 sm:mt-4 rounded-[14px] sm:rounded-[22px] border border-white/10 bg-white/4 p-2.5 sm:p-4 backdrop-blur">
-                      <div className="space-y-2 sm:space-y-3">
-                        <div>
-                          <p className="text-[9px] sm:text-xs uppercase tracking-[0.2em] text-white/35">
-                            Quantity
-                          </p>
-                          <p className="mt-1 text-[11px] sm:text-sm text-white/55">
-                            Available: {items.quantity}
-                          </p>
-                        </div>
+                  {/* NUMBER AND QUANTITY PANEL */}
+<div className="mt-3 sm:mt-4 rounded-[14px] sm:rounded-[22px] border border-white/10 bg-white/4 p-3 sm:p-4">
 
-                        <input
-                          className="w-full rounded-xl border border-white/10 bg-[#0C1324] px-2 sm:px-3 py-2 text-center text-sm text-white outline-none transition focus:border-sky-400"
-                          type="number"
-                          max={items.quantity}
-                          min={1}
-                          defaultValue={1}
-                          onChange={(e) => {
-                            setquantity(e.target.value);
-                          }}
-                        />
-                      </div>
-                    </div>
+  <p className="mb-3 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/35">
+    Select Number
+  </p>
+
+  <div className="grid grid-cols-4 gap-2">
+    {Array.from({ length: 8 }, (_, index) => {
+      const stock = items.sizes?.[index] || 0;
+      const selected = selectedNumbers[items._id] === index + 1;
+
+      return (
+        <button
+          key={index}
+          disabled={stock <= 0}
+          onClick={() =>
+            setSelectedNumbers({
+              ...selectedNumbers,
+              [items._id]: index + 1,
+            })
+          }
+          className={`rounded-xl border py-2 text-sm font-semibold transition
+            ${
+              selected
+                ? "bg-white text-[#0A0F1C] border-white"
+                : stock > 0
+                ? "bg-white/5 text-white border-white/10 hover:border-sky-400"
+                : "bg-red-500/10 text-white/25 border-white/5 cursor-not-allowed"
+            }`}
+        >
+          {index + 1}
+        </button>
+      );
+    })}
+  </div>
+
+  <p className="mt-3 text-xs text-white/55">
+    Available: {
+      items.sizes?.[(selectedNumbers[items._id] || 1) - 1] || 0
+    } pieces
+  </p>
+
+  <div className="mt-3">
+    <p className="mb-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/35">
+      Quantity
+    </p>
+
+    <input
+      className="w-full rounded-xl border border-white/10 bg-[#0C1324] px-3 py-2 text-center text-sm text-white outline-none focus:border-sky-400"
+      type="number"
+      min={1}
+      max={
+        items.sizes?.[(selectedNumbers[items._id] || 1) - 1] || 0
+      }
+      defaultValue={1}
+      id={`quantity-${items._id}`}
+    />
+  </div>
+</div>
 
                     {/* BUTTON */}
                     <button
                       className="mt-3 sm:mt-4 w-full rounded-[14px] sm:rounded-[18px] bg-white px-3 sm:px-5 py-2.5 sm:py-3 text-[12px] sm:text-sm font-semibold text-[#0A0F1C] transition hover:bg-sky-100"
-                      onClick={(e) => senddata(e, items._id, quantity, number)}
+                      onClick={(e) => senddata(e, items._id, number)}
                     >
                       Add to Cart
                     </button>

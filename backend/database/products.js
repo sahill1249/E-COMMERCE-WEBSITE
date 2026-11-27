@@ -7,6 +7,10 @@ const prodSchema = mongosse.Schema({
     quantity: Number,
     imageurl:String,
     items:String,
+    sizes: {
+    type: [Number],
+    default: [0, 0, 0, 0, 0, 0, 0, 0]
+},
 });
 
 module.exports = mongosse.model("prod",prodSchema);
